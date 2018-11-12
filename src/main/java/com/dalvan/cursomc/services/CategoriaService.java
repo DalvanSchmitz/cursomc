@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.dalvan.cursomc.domain.Categoria;
 import com.dalvan.cursomc.dto.CategoriaDTO;
 import com.dalvan.cursomc.repositories.CategoriaRepository;
-import com.dalvan.cursomc.services.exception.DataIntegrityException;
-import com.dalvan.cursomc.services.exception.ObjectNotFoundException;
+import com.dalvan.cursomc.services.exceptions.DataIntegrityException;
+import com.dalvan.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -27,23 +27,24 @@ public class CategoriaService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
-
+	
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
 		return repo.save(obj);
 	}
-
+	
 	public Categoria update(Categoria obj) {
 		Categoria newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
-
+	
 	public void delete(Integer id) {
 		find(id);
 		try {
 			repo.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
+		}
+		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
 		}
 	}
@@ -60,7 +61,7 @@ public class CategoriaService {
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
 	}
-
+	
 	private void updateData(Categoria newObj, Categoria obj) {
 		newObj.setNome(obj.getNome());
 	}

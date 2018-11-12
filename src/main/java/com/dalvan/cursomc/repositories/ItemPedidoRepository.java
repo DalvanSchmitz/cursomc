@@ -7,4 +7,5 @@ import com.dalvan.cursomc.domain.ItemPedido;
 
 @Repository
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Integer> {
+
 }
